@@ -1,0 +1,84 @@
+/*
+Theme Name: SoftwareOne Custom
+Theme URI: http://www.pleiadesdigital.com
+Description: Custom theme based on Storefront
+Author: Ronaldo Ortiz
+Author URI: http://www.pleiadesdigital.com
+Template: storefront
+Version: 1.0
+*/
+
+body {
+	/*border: 3px solid magenta;*/
+}
+
+/* FOOTER CREDIT STYLES*/
+.site-footer {
+	text-transform: uppercase;
+	/*font-size: 18px;
+	font-size: 1.125rem;*/
+}
+.site-footer .footer-credit-pd {
+	font-size: 12px;
+	font-size: 0.75rem;
+	text-transform: lowercase;
+}
+.site-footer .footer-credit-pd a {
+	color: inherit;
+	/*text-decoration: underline;*/
+}
+
+/* BUTTONS */
+.added_to_cart,
+.button, button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
+
+}
+
+/* Product Display Title*/
+.product h2 {
+	margin-top: 0px;
+}
+
+/* Footer Credit Link */
+.footer-credit-link {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+}
+.widget_price_filter .ui-slider .ui-slider-range,
+.widget_price_filter .ui-slider .ui-slider-handle {
+  background-color: #CCC !important;
+}
+
+
+/* HOMEPAGE STYLES */
+.fpsection {
+	height: 400px;
+	width: 100vw;
+	background-image: url('http://localhost/~ronyortiz/sites2017/softwareone/wp-content/themes/softwareone/assets/images/moc-beneficios.jpg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-position: fixed;
+	background-size: cover;
+}
+
+@media (min-width: 768px) {
+	.col-full {
+    max-width: 66.4989378333em;
+    margin: 0px !important;
+    padding: 0;
+    box-sizing: content-box;
+  }
+}
+
+@media (max-width: 767px) {
+	.col-full {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}
+
