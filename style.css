@@ -1,4 +1,4 @@
-/*
+/*!
 Theme Name: SoftwareOne Custom
 Theme URI: http://www.pleiadesdigital.com
 Description: Custom theme based on Storefront
@@ -7,78 +7,204 @@ Author URI: http://www.pleiadesdigital.com
 Template: storefront
 Version: 1.0
 */
-
-body {
-	/*border: 3px solid magenta;*/
+/*--------------------------------------------------------------
+0. Compass Imports & External
+--------------------------------------------------------------*/
+/* HOMEPAGE STYLES */
+/* line 11, sass/main/_basestyles.scss */
+.showcase .entry-content h4 {
+  font-weight: 400;
+  font-size: 50px;
+  font-size: 3.125rem;
+  margin-bottom: 0px;
+  text-shadow: 1px 0px 1px #f2f2f2;
+}
+/* line 18, sass/main/_basestyles.scss */
+.showcase .entry-content p {
+  font-weight: 300;
+  font-size: 40px;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  text-shadow: 1px 0px 1px #f2f2f2;
+}
+/* line 24, sass/main/_basestyles.scss */
+.showcase .entry-content p a {
+  font-size: 18px;
+  font-size: 1.125rem;
+  color: #333333;
+  background-color: #d3353e;
+  padding: 1em 2em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  color: #f2f2f2;
+  text-shadow: none;
+  text-transform: uppercase;
+}
+/* line 34, sass/main/_basestyles.scss */
+.showcase .entry-content p a:hover, .showcase .entry-content p a:focus {
+  background-color: #D20A15;
 }
 
+/* line 46, sass/main/_basestyles.scss */
+.fpsectioncover {
+  height: 100%;
+  width: 100%;
+  background-image: url("http://localhost/~ronyortiz/sites2017/softwareone/wp-content/themes/softwareone/assets/images/moc-beneficios.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin-bottom: 2em;
+}
+
+/* line 52, sass/main/_basestyles.scss */
+.fpsection {
+  background-color: rgba(43, 40, 40, 0.5);
+}
+/* line 54, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap {
+  margin: 0px auto;
+  height: auto;
+  padding: 2em 1em;
+}
+/* line 58, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap h2 {
+  color: #f2f2f2;
+  font-weight: 300;
+  font-size: 50px;
+  font-size: 3.125rem;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 1px 0px 1px #4d4d4d;
+}
+/* line 67, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl {
+  color: #f2f2f2;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* line 12, ../../../../../../../../usr/local/lib/ruby/gems/2.4.0/gems/susy-2.2.12/sass/susy/output/support/_clearfix.scss */
+.fpsection .fpsectionwrap dl:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+/* line 70, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl dt {
+  text-transform: uppercase;
+  font-size: 30px;
+  font-size: 1.875rem;
+  color: #FFFFFF;
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+/* line 79, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl dd {
+  color: #e6e6e6;
+  font-size: 18px;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  text-shadow: 1px 0px 1px #4d4d4d;
+}
+/* line 86, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl dt.two {
+  margin-left: 60px;
+}
+/* line 89, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl dd.two {
+  margin-left: 60px;
+}
+/* line 92, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl dt.three {
+  margin-left: 120px;
+}
+/* line 95, sass/main/_basestyles.scss */
+.fpsection .fpsectionwrap dl dd.three {
+  margin-left: 120px;
+}
+
+@media (min-width: 768px) {
+  /* line 102, sass/main/_basestyles.scss */
+  .col-full {
+    /* max-width: 66.4989378333em;
+    margin: 0px !important;
+    padding: 0;
+    box-sizing: content-box; */
+  }
+}
+@media (max-width: 767px) {
+  /* line 111, sass/main/_basestyles.scss */
+  .col-full {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
 /* FOOTER CREDIT STYLES*/
+/* line 120, sass/main/_basestyles.scss */
 .site-footer {
-	text-transform: uppercase;
-	/*font-size: 18px;
-	font-size: 1.125rem;*/
+  text-transform: uppercase;
+  text-align: center;
+  /*font-size: 18px;
+  font-size: 1.125rem;*/
 }
+
+/* line 126, sass/main/_basestyles.scss */
 .site-footer .footer-credit-pd {
-	font-size: 12px;
-	font-size: 0.75rem;
-	text-transform: lowercase;
+  font-size: 12px;
+  font-size: 0.75rem;
+  text-transform: lowercase;
 }
+
+/* line 131, sass/main/_basestyles.scss */
 .site-footer .footer-credit-pd a {
-	color: inherit;
-	/*text-decoration: underline;*/
+  color: inherit;
+  /*text-decoration: underline;*/
 }
 
 /* BUTTONS */
-.added_to_cart,
-.button, button,
-input[type=button],
-input[type=reset],
-input[type=submit] {
-
-}
-
 /* Product Display Title*/
+/* line 146, sass/main/_basestyles.scss */
 .product h2 {
-	margin-top: 0px;
+  margin-top: 0px;
 }
 
 /* Footer Credit Link */
+/* line 151, sass/main/_basestyles.scss */
 .footer-credit-link {
-	font-weight: bold;
-	text-transform: uppercase;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-}
+/* line 156, sass/main/_basestyles.scss */
 .widget_price_filter .ui-slider .ui-slider-range,
 .widget_price_filter .ui-slider .ui-slider-handle {
   background-color: #CCC !important;
 }
 
-
-/* HOMEPAGE STYLES */
-.fpsection {
-	height: 400px;
-	width: 100vw;
-	background-image: url('http://localhost/~ronyortiz/sites2017/softwareone/wp-content/themes/softwareone/assets/images/moc-beneficios.jpg');
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-position: fixed;
-	background-size: cover;
+/******************************************
+/******** SINGLE PRODUCT STYLES **********/
+/******************************************/
+/* line 166, sass/main/_basestyles.scss */
+.single_add_to_cart_button .atc-button-text,
+.checkout-button .atc-button-text {
+  font-family: "Source Sans Pro", HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue",H elvetica,Arial, "Lucida Grande", sans-serif;
 }
 
-@media (min-width: 768px) {
-	.col-full {
-    max-width: 66.4989378333em;
-    margin: 0px !important;
-    padding: 0;
-    box-sizing: content-box;
-  }
+/* line 170, sass/main/_basestyles.scss */
+.single_add_to_cart_button.fa:before {
+  padding-right: 10px;
+  font-weight: 200;
 }
 
-@media (max-width: 767px) {
-	.col-full {
-		margin-left: 0px;
-		margin-right: 0px;
-	}
+/* line 175, sass/main/_basestyles.scss */
+.checkout-button.fa:before {
+  padding-right: 10px;
+  font-weight: 200;
 }
 
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,35 @@
+/*!
+Theme Name: SoftwareOne Custom
+Theme URI: http://www.pleiadesdigital.com
+Description: Custom theme based on Storefront
+Author: Ronaldo Ortiz
+Author URI: http://www.pleiadesdigital.com
+Template: storefront
+Version: 1.0
+*/
+
+/*--------------------------------------------------------------
+0. Compass Imports & External
+--------------------------------------------------------------*/
+// COMPASS Imports
+@import "compass";
+// @import "compass/reset";
+@import "compass/css3/flexbox";
+@import "compass/css3/transition";
+@import "compass/css3/filter";
+@import "compass/css3/text-shadow";
+@import "compass/css3/box-shadow";
+@import "compass/css3/opacity";
+
+// Libraries
+@import "susy";
+@import "breakpoint";
+
+// Variables
+@import "extras/colors";
+@import "extras/structure";
+@import "extras/fonts";
+@import "extras/mixins";
+
+// Files
+@import "main/basestyles";

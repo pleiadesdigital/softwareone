@@ -1,14 +1,18 @@
 <?php /* The template used for displaying page content in template-fpsectin.php */ ?>
 
-<?php
-$featured_image = get_the_post_thumbnail_url(get_the_ID(), 'thumbnail');
-?>
+<?php $featured_image = get_the_post_thumbnail_url(get_the_ID(), 'thumbnail'); ?>
 
-<div id="post-<?php the_ID(); ?>" <?php post_class('fpsection'); ?>>
-	<div class="col-full">
+<div class="fpsectioncover">
+	<section id="" class="fpsection">
+		<div id="post-<?php the_ID(); ?>" <?php post_class('col-full fpsectionwrap'); ?>>
+			<div class="col-full">
 
-		<?php the_title('<h1>', '</h1>'); ?>
+				<?php the_title('<h2>', '</h2>'); ?>
 
-	</div>
-</div><!-- #post-## -->
+				<?php the_content(); ?>
+
+			</div>
+		</div><!-- #post-## -->
+	</section>
+</div><!-- class="fpsectioncover" -->
 

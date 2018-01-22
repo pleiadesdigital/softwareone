@@ -23,8 +23,8 @@ add_action('wp_enqueue_scripts', 'so_scripts');
 *******************************************************/
 
 // remove product display in order to add the correct order @ HOMEPAGE
-add_action('init', 'so_hompage_lists_swap');
-function so_hompage_lists_swap() {
+add_action('init', 'so_homepage_lists_swap');
+function so_homepage_lists_swap() {
 	remove_action('homepage', 'storefront_product_categories', 20);
 	remove_action('homepage', 'storefront_featured_products', 40);
 	remove_action('homepage', 'storefront_popular_products', 50);
@@ -33,6 +33,106 @@ function so_hompage_lists_swap() {
 	add_action('homepage', 'storefront_homepage_htmlsection', 40);
 	add_action('homepage', 'storefront_product_categories', 50);
 	add_action('homepage', 'storefront_best_selling_products', 60);
+}
+
+function storefront_product_categories($args) {
+	if (storefront_is_woocommerce_activated()) {
+		$args = apply_filters('storefront_product_categories_args', array(
+			'limit' 			=> 3,
+			'columns' 			=> 3,
+			'child_categories' 	=> 0,
+			'order'					=> 'ASC',
+			'orderby' 			=> 'rand',
+			'title'				=> __('Comprar por categoría', 'softwareone'),
+		));
+		$shortcode_content = storefront_do_shortcode('product_categories', apply_filters('storefront_product_categories_shortcode_args', array(
+			'number'  => intval($args['limit']),
+			'columns' => intval($args['columns']),
+			'order'		=> esc_attr($args['order']),
+			'orderby' => esc_attr($args['orderby']),
+			'parent'  => esc_attr($args['child_categories']),
+		)));
+		// Only display the section if the shortcode returns product categories
+		if (false !== strpos($shortcode_content, 'product-category')) { ?>
+			<section class="<?php if (is_page_template('template-homepage.php')) { echo 'col-full'; } ?> storefront-product-section storefront-product-categories" aria-label="<?php esc_attr__('Product Categories', 'storefront'); ?>">
+			<?php
+			do_action('storefront_homepage_before_product_categories' );
+			echo '<h2 class="section-title">' . wp_kses_post($args['title']) . '</h2>';
+			do_action('storefront_homepage_after_product_categories_title');
+			echo $shortcode_content;
+			do_action('storefront_homepage_after_product_categories');
+			echo '</section>';
+		}
+	}
+}
+
+function storefront_recent_products($args) {
+	if (storefront_is_woocommerce_activated()) {
+		$args = apply_filters( 'storefront_recent_products_args', array(
+			'limit' 			=> 4,
+			'columns' 			=> 4,
+			'title'				=> __('CURSOS NUEVOS', 'storefront'),
+		));
+		$shortcode_content = storefront_do_shortcode( 'recent_products', apply_filters( 'storefront_recent_products_shortcode_args', array(
+			'per_page' => intval( $args['limit'] ),
+			'columns'  => intval( $args['columns'] ),
+		)));
+		// Only display the section if the shortcode returns products
+		if (false !== strpos($shortcode_content, 'product')) { ?>
+			<section class="<?php if (is_page_template('template-homepage.php')) { echo 'col-full'; } ?> storefront-product-section storefront-product-categories" aria-label="<?php esc_attr__('New Courses', 'storefront'); ?>">
+			<?php
+			do_action('storefront_homepage_before_recent_products');
+			echo '<h2 class="section-title">' . wp_kses_post($args['title']) . '</h2>';
+			do_action('storefront_homepage_after_recent_products_title');
+			echo $shortcode_content;
+			do_action('storefront_homepage_after_recent_products');
+			echo '</section>';
+		}
+	}
+}
+
+function storefront_best_selling_products($args) {
+	if (storefront_is_woocommerce_activated()) {
+		$args = apply_filters('storefront_best_selling_products_args', array(
+			'limit'   => 4,
+			'columns' => 4,
+			'title'	  => esc_attr__('LOS MÁS VENDIDOS', 'storefront'),
+		));
+		$shortcode_content = storefront_do_shortcode('best_selling_products', apply_filters( 'storefront_best_selling_products_shortcode_args', array(
+			'per_page' => intval( $args['limit']),
+			'columns'  => intval( $args['columns']),
+		)));
+
+		/**
+		 * Only display the section if the shortcode returns products
+		 */
+		if (false !== strpos($shortcode_content, 'product')) { ?>
+
+			<section class="<?php if (is_page_template('template-homepage.php')) { echo 'col-full'; } ?> storefront-product-section storefront-product-categories" aria-label="<?php esc_attr__('Product Categories', 'storefront'); ?>">
+
+			<?php
+			do_action('storefront_homepage_before_best_selling_products');
+
+			echo '<h2 class="section-title">' . wp_kses_post( $args['title']) . '</h2>';
+
+			do_action('storefront_homepage_after_best_selling_products_title');
+
+			echo $shortcode_content;
+
+			do_action('storefront_homepage_after_best_selling_products');
+
+			echo '</section>';
+
+		}
+	}
+}
+
+// MODIFY FRONT PAGE HEADER CONTENT
+add_action('init', 'so_homepage_header_content');
+function so_homepage_header_content() {
+	remove_action('storefront_homepage', 'storefront_homepage_header', 10);
+	//remove_action('storefront_homepage', 'storefront_page_content', 20);
+	//add_action('storefront_homepage', 'custom_storefront_page_content', 10)
 }
 
 // ADD NEW HTML CONTENT TO THE FRONTEND
@@ -51,12 +151,6 @@ if (!function_exists('storefront_homepage_htmlsection')) {
 		wp_reset_postdata();
 	}
 }
-
-/*while (have_posts()) {
-	the_post();
-	get_template_part('content', 'homepage');
-}*/
-
 
 /******************************************************
 ****** GENERAL WC HOOKS - ACTIONS AND FILTERS *********
@@ -77,7 +171,6 @@ function custom_single_product_image_html($html, $post_id) {
 add_filter('woocommerce_single_product_image_thumbnail_html', 'custom_single_product_image_html', 10, 2);
 
 // Reorder tabs
-
 add_filter('woocommerce_product_tabs', 'so_reorder_tabs', 98);
 function so_reorder_tabs($tabs) {
 	$tabs['description']['priority'] = 10;
@@ -127,4 +220,69 @@ function custom_store_front_credit() {
 add_action('init', 'so_remove_storefront_header_search');
 function so_remove_storefront_header_search() {
 	remove_action('storefront_header', 'storefront_product_search', 40);
+}
+
+
+
+/* MODIFY CHECKOUT FIELDS */
+
+// remove phone field
+add_filter('woocommerce_checkout_fields', 'storepd_checkout_fields', 20);
+function storepd_checkout_fields($fields) {
+	unset($fields['billing']['billing_phone']);
+	// make email field full width
+	$fields['billing']['billing_email']['class'] = array('form-row-wide');
+	return $fields;
+}
+
+// add 'how did you hear about us' field
+add_filter('woocommerce_checkout_fields', 'softwareone_feedback', 30);
+function softwareone_feedback($fields) {
+	$fields['order']['hear_about_us'] = array(
+		'type' 					=> 'select',
+		'class'					=> array('form-row-wide'),
+		'label'					=> '¿Cómo escuchaste de nosotros?',
+		'options'				=> array(
+			'default'			=> '-- selecciona una opción --',
+			'tv'					=> 'TV',
+			'radio'				=> 'Radio',
+			'internet'		=> 'Internet',
+			'billboard'		=> 'Billboard'
+		),
+	);
+	return $fields;
+}
+
+/******************************************************
+********** MODIFY TABS INFO WITH FILTER  **************
+*******************************************************/
+
+//add_filter('woocommerce_product_tabs', 'softwareone_product_tabs', 100);
+
+function softwareone_product_tabs() {
+	/*$tabs['reviews']['title'] = __("Success Stories");
+	return $tabs;*/
+}
+
+
+/******************************************************
+********** MODIFY DROP DOWN FILTERS  **************
+*******************************************************/
+add_filter('woocommerce_catalog_orderby', 'softwareone_catalog_orderby', 20);
+function softwareone_catalog_orderby($orderby) {
+	unset($orderby['rating']);
+	// $orderby['date'] = __('Ordenar por fecha: Nuevos primero', 'woocommerce');
+	// $orderby['oldest_to_recent'] = __('Ordenar por fecha: Antigüos primero', 'woocommerce');
+	return $orderby;
+}
+
+// create query to add oldest-to-newest list
+//add_filter('woocommerce_get_catalog_ordering_args', 'softwareone_get_catalog_ordering_args', 15);
+function softwareone_get_catalog_ordering_args () {
+/*	$orderby_value = isset($_GET['orderby']) ? wc_clean($_GET['orderby']) : apply_filters('woocommerce_default_catalog_orderby', get_option('woocommerce_default_catalog_orderby'));
+	if ('oldest_to_recent' == $orderby_value) {
+		$args['orderby'] = 'date';
+		$args['order'] = 'ASC';
+	}
+	return $args;*/
 }
