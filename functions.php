@@ -7,13 +7,26 @@ function sf_child_theme_dequeue_style() {
 	wp_dequeue_style('storefront-woocommerce-style');
 }
 
+/************************************************
+********************* NAV MENUS ****************
+*************************************************/
+
+function softwareone_setup() {
+	register_nav_menus(array(
+		'social_menu'		=> __('Social Menu', 'softwareone'),
+	));
+}
+add_action('after_setup_theme', 'softwareone_setup');
+
 
 /************************************************
 ************* SCRIPTS AND STYLES ****************
 *************************************************/
 function so_scripts() {
 	// FONTAWESOME
-		wp_enqueue_script('sfchild-fontawesome', 'https://use.fontawesome.com/b1403a6995.js', array(), '20180111', true);
+	wp_enqueue_script('sfchild-fontawesome', 'https://use.fontawesome.com/b1403a6995.js', array(), '20180111', true);
+	// CUSTOM JAVASCRIPT (app.js)
+	wp_enqueue_script('softwareone-app', get_theme_file_uri('/assets/js/app.js'), array('jquery'), '20180109', false);
 }
 add_action('wp_enqueue_scripts', 'so_scripts');
 
@@ -38,17 +51,17 @@ function so_homepage_lists_swap() {
 function storefront_product_categories($args) {
 	if (storefront_is_woocommerce_activated()) {
 		$args = apply_filters('storefront_product_categories_args', array(
-			'limit' 			=> 3,
-			'columns' 			=> 3,
+			// 'limit' 			=> -1,
+			// 'columns' 			=> 5,
 			'child_categories' 	=> 0,
-			'order'					=> 'ASC',
+			// 'order'					=> 'ASC',
 			'orderby' 			=> 'rand',
-			'title'				=> __('Comprar por categoría', 'softwareone'),
+			'title'				=> __('BUSCAR POR CATEGORÍA', 'softwareone'),
 		));
 		$shortcode_content = storefront_do_shortcode('product_categories', apply_filters('storefront_product_categories_shortcode_args', array(
-			'number'  => intval($args['limit']),
-			'columns' => intval($args['columns']),
-			'order'		=> esc_attr($args['order']),
+			// 'number'  => intval($args['limit']),
+			// 'columns' => intval($args['columns']),
+			// 'order'		=> esc_attr($args['order']),
 			'orderby' => esc_attr($args['orderby']),
 			'parent'  => esc_attr($args['child_categories']),
 		)));
@@ -56,10 +69,11 @@ function storefront_product_categories($args) {
 		if (false !== strpos($shortcode_content, 'product-category')) { ?>
 			<section class="<?php if (is_page_template('template-homepage.php')) { echo 'col-full'; } ?> storefront-product-section storefront-product-categories" aria-label="<?php esc_attr__('Product Categories', 'storefront'); ?>">
 			<?php
-			do_action('storefront_homepage_before_product_categories' );
+			do_action('storefront_homepage_before_product_categories');
 			echo '<h2 class="section-title">' . wp_kses_post($args['title']) . '</h2>';
 			do_action('storefront_homepage_after_product_categories_title');
-			echo $shortcode_content;
+			//echo $shortcode_content;
+			echo do_shortcode('[wpb-woo-category-slider content_type="with_icon" items="4" autoplay="false" exclude="27" need_description="on" pagination="false" loop="false"]');
 			do_action('storefront_homepage_after_product_categories');
 			echo '</section>';
 		}
@@ -135,6 +149,42 @@ function so_homepage_header_content() {
 	//add_action('storefront_homepage', 'custom_storefront_page_content', 10)
 }
 
+// ADD NEW HTML CONTENT TO THE HEADER
+
+add_action('init', 'so_header_blocks');
+function so_header_blocks() {
+	add_action('storefront_header', 'so_header_login_logout', 35);
+}
+
+// ADD USERNAME LOGGED IN TO HEADER
+if (!function_exists('so_header_login_logout')) {
+	function so_header_login_logout() {
+		if (is_user_logged_in()) {
+			$user = wp_get_current_user();
+			echo "<div class='header-login-logout'>";
+			echo "<span class='logged-in'>Hola: <b>" . $user->display_name . "</b>!</span>";
+			echo "<span class='logout-link'><a href='" . get_permalink(wc_get_page_id('myaccount')) . "'>Salir</a></span>";
+			echo "</div>";
+		} elseif (!is_user_logged_in()) {
+			echo "<div class='header-login-logout logout'>";
+			echo "<span class='login-link'><a href='" . get_permalink(wc_get_page_id('myaccount')) . "'>Ingresar</a></span>";
+			echo "</div>";
+		}
+	}
+}
+// REDIRECT TO HOME
+add_filter('woocommerce_login_redirect', 'login_redirect');
+function login_redirect() {
+	return home_url();
+}
+
+add_action('wp_logout', 'logout_redirect');
+function logout_redirect() {
+	wp_redirect(home_url());
+	exit;
+}
+
+
 // ADD NEW HTML CONTENT TO THE FRONTEND
 if (!function_exists('storefront_homepage_htmlsection')) {
 	function storefront_homepage_htmlsection() {
@@ -180,6 +230,7 @@ function so_reorder_tabs($tabs) {
 	return $tabs;
 }
 
+
 // Add new tabs
 
 add_filter('woocommerce_product_tabs', 'so_new_product_tab');
@@ -201,19 +252,38 @@ function so_new_product_tab_content() {
 // REMOVE FOOTER CREDIT INFO
 add_action('init', 'custom_remove_footer_credit', 10);
 function custom_remove_footer_credit() {
+	remove_action('storefront_footer', 'storefront_footer_widgets', 10);
+	add_action('storefront_footer', 'storefront_footer_widgets', 30);
 	remove_action('storefront_footer', 'storefront_credit', 20);
 	add_action('storefront_footer', 'custom_store_front_credit', 20);
 }
 function custom_store_front_credit() {
 	?>
 	<div class="site-info">
-		<?php echo esc_html(apply_filters('storefront_copyright_text', $content = '&copy; ' . get_bloginfo('name') . ' ' . date( 'Y'))); ?>
-			<?php if (apply_filters('storefront_credit_link', true)) { ?>
-			<br /><span class="footer-credit-pd"><?php printf(esc_attr__('%1$s developed by %2$s', 'storefront'), '', '<a href="http://www.pleiadesdigital.com" class="footer-credit-link" target="_blank" title="Pleiades Digital - Website Development and Ecommerce Agency">Pleiades Digital</a>' ); ?></span>
-			<?php } ?>
+		<div class="footer-logo"><img src="http://localhost/~ronyortiz/sites2017/softwareone/wp-content/themes/softwareone/assets/images/logo-softwareone-transparent-white.png"></div>
+		<div class="footer-moto"><h4>Siga a SoftwareONE para conocer las últimas tecnologías, eventos y promociones</h4></div>
+			<?php
+				wp_nav_menu(array(
+					'theme_location'		=> 'social_menu',
+					'container'					=> 'nav',
+					'container_id'			=> 'footer-social',
+					'container_class'		=> 'footer-social',
+					'menu_id'						=> 'menu-social-items',
+					'menu_class'				=> 'menu-items',
+					'depth'							=> 1,
+					'link_before'				=> '<span class="screen-reader-text">',
+					'link_after'				=> '</span>',
+					'fallback_cb'				=> '',
+				));
+			?>
+
+
 	</div><!-- class="site-info" -->
 	<?php
 }
+
+// callback function for SOCIAL MENU
+
 
 /* HEADER */
 // Remove search form from Header
@@ -221,7 +291,6 @@ add_action('init', 'so_remove_storefront_header_search');
 function so_remove_storefront_header_search() {
 	remove_action('storefront_header', 'storefront_product_search', 40);
 }
-
 
 
 /* MODIFY CHECKOUT FIELDS */
@@ -286,3 +355,15 @@ function softwareone_get_catalog_ordering_args () {
 	}
 	return $args;*/
 }
+
+// ADD FILTER DROWDOWN TO _before_shop_loop
+add_action('init', 'so_filter_list');
+function so_filter_list() {
+	add_action('woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30);
+	remove_action('woocommerce_before_shop_loop', 'woocommerce_result_count', 30);
+	add_action('woocommerce_before_shop_loop', 'woocommerce_result_count', 30);
+
+}
+
+
+

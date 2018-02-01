@@ -23,4 +23,4 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="checkout-button button alt fa fa-arrow-circle-right"><span class="atc-button-text"><?php esc_html_e( 'Proceed to checkout', 'woocommerce' ); ?></span></a>
+<a href="<?php echo esc_url( wc_get_checkout_url() );?>" class="checkout-button button alt fa fa-arrow-circle-right"><span class="atc-button-text"><?php esc_html_e( 'Checkout', 'softwareone' ); ?></span></a>

@@ -1,0 +1,13 @@
+ $susy: (
+	columns: 12,
+	container: 1000px,
+	global-box-sizing: border-box
+);
+
+$movil-max: max-width 479px;
+
+$movil: 320px; //20em
+$tablet: 480px; //30em
+$laptop: 768px; //48em
+$desktop: 1072px; //67em
+$largedesk: 1264px; //79em
