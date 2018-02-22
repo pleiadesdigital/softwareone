@@ -245,8 +245,8 @@ function so_new_product_tab( $tabs ) {
 }
 function so_new_product_tab_content() {
 	// The new tab content
-	echo '<h2>' . esc_html_e('Información Adicional', 'softwareone') . '</h2>';
-	echo '<p>Here\'s your new product tab.</p>';
+	echo '<h2>Información Adicional</h2>';
+	//echo get_post_meta(get_the_ID(), 'prerequisitos', false);
 }
 
 // REMOVE FOOTER CREDIT INFO
